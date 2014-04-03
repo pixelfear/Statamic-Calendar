@@ -1,0 +1,13 @@
+{
+  "name": "Calendar",
+  "version": "1.0.0",
+  "description": "A calendar add-on for Statamic",
+  "main": "Gruntfile.coffee",
+  "author": "Jason Varga",
+  "homepage": "http://pixelfear.com",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-copy": "~0.4.1"
+  }
+}
