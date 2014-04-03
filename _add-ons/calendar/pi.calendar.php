@@ -9,6 +9,14 @@ class Plugin_calendar extends Plugin
 		$month = $this->fetchParam('month', date('n'));
 		$year = $this->fetchParam('year', date('Y'));
 
+		// Get entries
+		$folder = $this->fetchParam('folder');
+		$entries_set = ContentService::getContentByFolders($folder);
+		$entries_set->filter(array(
+			'type' => 'entries'
+		));
+		$this->tasks->setEntries($entries_set);
+
 		// What is the first day of the month in question?
 		$first_day_of_month = mktime(0, 0, 0, $month, 1, $year);
 		// How many days does this month contain?
@@ -24,11 +32,15 @@ class Plugin_calendar extends Plugin
 		$i = $day_of_week;
 		while ($i>0) {
 			$date = mktime(0, 0, 0, $month, 1-$i, $year);
+			$entries_set = $this->tasks->getDayEntries($date);
 			$weeks[$week]['days'][] = array(
-				'date'        => $date,
-				'day'         => Date::format('j', $date),
-				'other_month' => true,
-				'prev_month'  => true
+				'date'          => $date,
+				'day'           => Date::format('j', $date),
+				'other_month'   => true,
+				'prev_month'    => true,
+				'has_entries'   => (bool) $entries_set->count(),
+				'total_entries' => $entries_set->count(),
+				'entries'       => $entries_set->extract()
 			);
 			$i--;
 		}
@@ -40,12 +52,17 @@ class Plugin_calendar extends Plugin
 				$day_of_week = 0;
 				$week++;
 			}
-			// Add a day to the week
+
+			$entries_set = $this->tasks->getDayEntries($date);
+			$date = mktime(0, 0, 0, $month, $current_day, $year);
 			$weeks[$week]['days'][] = array(
-				'day'  => $current_day,
-				'date' => mktime(0, 0, 0, $month, $current_day, $year)
+				'date'          => $date,
+				'day'           => $current_day,
+				'has_entries'   => (bool) $entries_set->count(),
+				'total_entries' => $entries_set->count(),
+				'entries'       => $entries_set->extract()
 			);
-			// Increment
+
 			$current_day++;
       $day_of_week++;
 		}
@@ -56,12 +73,16 @@ class Plugin_calendar extends Plugin
 		if ($day_of_week != 7) {
 			$remaining_days = 7-$day_of_week;
 			while ($remaining_days > 0) {
+				$entries_set = $this->tasks->getDayEntries($date);
 				$date = mktime(0, 0, 0, $month, $current_day, $year);
 				$weeks[$week]['days'][] = array(
-					'date'        => $date,
-					'day'         => Date::format('j', $date),
-					'other_month' => true,
-					'next_month'  => true
+					'date'          => $date,
+					'day'           => Date::format('j', $date),
+					'other_month'   => true,
+					'next_month'    => true,
+					'has_entries'   => (bool) $entries_set->count(),
+					'total_entries' => $entries_set->count(),
+					'entries'       => $entries_set->extract()
 				);
 				$remaining_days--;
 				$current_day++;
