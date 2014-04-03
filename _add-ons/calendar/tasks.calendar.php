@@ -54,6 +54,14 @@ class Tasks_calendar extends Tasks
 			}
 		});
 
+		// Add an 'all_day' boolean
+		$entries_set->customSupplement('all_day', function($entry_url) use ($date) {
+			$entry = Content::get($entry_url);
+			$start_time = array_get($entry, 'start_time');
+			$end_time = array_get($entry, 'end_time');
+			return !($start_time || $end_time);
+		});
+
 		return $entries_set;
 	}
 
