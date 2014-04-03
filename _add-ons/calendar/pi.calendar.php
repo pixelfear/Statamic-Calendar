@@ -5,7 +5,7 @@ class Plugin_calendar extends Plugin
 
 	public function month()
 	{
-		// Get some parameters, defalting to current date
+		// Get some parameters, defaulting to current date
 		$month = $this->fetchParam('month', date('n'));
 		$year = $this->fetchParam('year', date('Y'));
 
