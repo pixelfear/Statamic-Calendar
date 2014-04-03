@@ -27,10 +27,14 @@ class Tasks_calendar extends Tasks
 
 		// Only allow events that occur today (or today is within the event date range)
 		$entries_set->customFilter(function($entry) use ($date) {
-			if ($multi_day = isset($entry['end_date'])) {
-				return ($date >= $entry['datestamp'] && $date <= Date::resolve($entry['end_date']));
+			$start_date = $entry['datestamp'];
+			$end_date   = (isset($entry['end_date'])) ? Date::resolve($entry['end_date']) : $entry['datestamp'];
+			$multi_day  = ($end_date != $start_date);
+
+			if ($multi_day) {
+				return ($date >= $start_date && $date <= $end_date);
 			} else {
-				return ($date == $entry['datestamp']);
+				return ($date == $start_date);
 			}
 		});
 
