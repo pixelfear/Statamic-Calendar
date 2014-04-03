@@ -101,10 +101,6 @@ class Plugin_calendar extends Plugin
 					'total_entries' => $entries_set->count(),
 					'entries'       => $entries_set->get($include_content, false)
 				);
-				// Make outer variables that may be useful available to the entries loop
-				array_walk($day_data['entries'], function(&$item) use ($day_data) {
-					$item['first_day_of_week'] = $day_data['first_day_of_week'];
-				});
 				$weeks[$week]['days'][] = $day_data;
 				$remaining_days--;
 				$current_day++;
