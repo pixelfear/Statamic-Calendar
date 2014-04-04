@@ -68,13 +68,20 @@ class Tasks_calendar extends Tasks
 		// Sort by all day entries first, then by time
 		$all_days = array();
 		$start_times = array();
+		$start_dates = array();
 		foreach ($entries as $key => $row) {
 			$all_days[$key] = array_get($row, 'all_day');
 			$start_time = array_get($row, 'start_time');
 			$start_time = date('U', strtotime($start_time));
 			$start_times[$key] = $start_time;
+			$start_dates[$key] = array($row, 'datestamp');
 		}
-		array_multisort($all_days, SORT_DESC, $start_times, SORT_ASC, $entries);
+		array_multisort(
+			$all_days, SORT_DESC,
+			$start_dates, SORT_DESC,
+			$start_times, SORT_ASC,
+			$entries
+		);
 
 		return $entries;
 	}
