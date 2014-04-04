@@ -3,6 +3,13 @@
 class Plugin_calendar extends Plugin
 {
 
+	public function redirect()
+	{
+		$url = $this->fetchParam('url');
+		$date = $this->fetchParam('date', time());
+		$full_url = URL::assemble($url, Date::format('Y', $date), Date::format('m'));
+		URL::redirect($full_url);
+	}
 	public function month()
 	{
 		// Get some parameters
