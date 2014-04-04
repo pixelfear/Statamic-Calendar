@@ -142,4 +142,10 @@ class Plugin_calendar extends Plugin
 		return Parse::template($this->content, $calendar_data);
 	}
 
+	public function month_name()
+	{
+		$month   = $this->blink->get('month');
+		$year    = $this->blink->get('year');
+		return Date::format('F', $year.'-'.$month.'-01');
+	}
 }
