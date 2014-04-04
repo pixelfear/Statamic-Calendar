@@ -9,9 +9,6 @@ class Plugin_calendar extends Plugin
 		$month = $this->fetchParam('month', date('n'));
 		$year = $this->fetchParam('year', date('Y'));
 
-		// Non-date parameters
-		$include_content = $this->fetchParam('include_content', false);
-
 		// Get entries
 		$folder = $this->fetchParam('folder');
 		$entries_set = ContentService::getContentByFolders($folder);
@@ -35,7 +32,7 @@ class Plugin_calendar extends Plugin
 		$i = $day_of_week;
 		while ($i>0) {
 			$date = mktime(0, 0, 0, $month, 1-$i, $year);
-			$entries_set = $this->tasks->getDayEntries($date);
+			$entries = $this->tasks->getDayEntries($date);
 			$day_data = array(
 				'date'              => $date,
 				'day'               => Date::format('j', $date),
@@ -43,8 +40,8 @@ class Plugin_calendar extends Plugin
 				'prev_month'        => true,
 				'first_day_of_week' => ($day_of_week-$i == 0),
 				'has_entries'       => (bool) $entries_set->count(),
-				'total_entries'     => $entries_set->count(),
-				'entries'           => $entries_set->get($include_content, false)
+				'total_entries'     => count($entries),
+				'entries'           => $entries
 			);
 			// Make outer variables that may be useful available to the entries loop
 			array_walk($day_data['entries'], function(&$item) use ($day_data) {
@@ -63,14 +60,14 @@ class Plugin_calendar extends Plugin
 			}
 
 			$date = mktime(0, 0, 0, $month, $current_day, $year);
-			$entries_set = $this->tasks->getDayEntries($date);
+			$entries = $this->tasks->getDayEntries($date);
 			$day_data = array(
 				'date'              => $date,
 				'day'               => $current_day,
 				'first_day_of_week' => ($day_of_week == 0),
 				'has_entries'       => (bool) $entries_set->count(),
-				'total_entries'     => $entries_set->count(),
-				'entries'           => $entries_set->get($include_content, false)
+				'total_entries'     => count($entries),
+				'entries'           => $entries
 			);
 
 			// Make outer variables that may be useful available to the entries loop
@@ -91,15 +88,15 @@ class Plugin_calendar extends Plugin
 			$remaining_days = 7-$day_of_week;
 			while ($remaining_days > 0) {
 				$date = mktime(0, 0, 0, $month, $current_day, $year);
-				$entries_set = $this->tasks->getDayEntries($date);
+				$entries = $this->tasks->getDayEntries($date);
 				$day_data = array(
 					'date'          => $date,
 					'day'           => Date::format('j', $date),
 					'other_month'   => true,
 					'next_month'    => true,
 					'has_entries'   => (bool) $entries_set->count(),
-					'total_entries' => $entries_set->count(),
-					'entries'       => $entries_set->get($include_content, false)
+					'total_entries' => count($entries),
+					'entries'       => $entries
 				);
 				$weeks[$week]['days'][] = $day_data;
 				$remaining_days--;

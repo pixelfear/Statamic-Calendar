@@ -62,7 +62,21 @@ class Tasks_calendar extends Tasks
 			return !($start_time || $end_time);
 		});
 
-		return $entries_set;
+		// Turn into an array
+		$entries = $entries_set->extract();
+
+		// Sort by all day entries first, then by time
+		$all_days = array();
+		$start_times = array();
+		foreach ($entries as $key => $row) {
+			$all_days[$key] = array_get($row, 'all_day');
+			$start_time = array_get($row, 'start_time');
+			$start_time = date('U', strtotime($start_time));
+			$start_times[$key] = $start_time;
+		}
+		array_multisort($all_days, SORT_DESC, $start_times, SORT_ASC, $entries);
+
+		return $entries;
 	}
 
 }
