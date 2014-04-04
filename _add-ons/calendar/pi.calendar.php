@@ -10,6 +10,15 @@ class Plugin_calendar extends Plugin
 		$full_url = URL::assemble($url, Date::format('Y', $date), Date::format('m'));
 		URL::redirect($full_url);
 	}
+
+	public function set_month()
+	{
+		$this->blink->set('month',        $this->fetchParam('month', date('n')) );
+		$this->blink->set('year',         $this->fetchParam('year', date('Y')) );
+		$this->blink->set('folder',       $this->fetchParam('folder') );
+		$this->blink->set('cache_length', $this->fetchParam('cache', 60) );
+	}
+
 	public function month()
 	{
 		// Get some parameters
