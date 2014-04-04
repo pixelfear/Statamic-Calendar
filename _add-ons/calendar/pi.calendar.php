@@ -22,10 +22,11 @@ class Plugin_calendar extends Plugin
 	public function month()
 	{
 		// Get some parameters
-		$month        = $this->fetchParam('month', date('n'));
-		$year         = $this->fetchParam('year', date('Y'));
-		$folder       = $this->fetchParam('folder');
-		$cache_length = $this->fetchParam('cache', 60);
+		$inherit      = $this->fetchParam('inherit', false);
+		$month        = ($inherit) ? $this->blink->get('month')  : $this->fetchParam('month', date('n'));
+		$year         = ($inherit) ? $this->blink->get('year')   : $this->fetchParam('year', date('Y'));
+		$folder       = ($inherit) ? $this->blink->get('folder') : $this->fetchParam('folder');
+		$cache_length = ($inherit) ? $this->blink->get('cache')  : $this->fetchParam('cache', 60);
 
 		// Read from cache, if available
 		$cache_filename = 'month-'.$year.'-'.str_pad($month, 2, 0, STR_PAD_LEFT);
