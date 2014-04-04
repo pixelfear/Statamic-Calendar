@@ -175,4 +175,68 @@ class Plugin_calendar extends Plugin
 		);
 		return Parse::template($this->content, $vars);
 	}
+
+	public function date_select()
+	{
+		// Single tag or tag pair?
+		$tag_pair = ($this->content != '');
+
+		// Date unit
+		$unit = $this->fetchParam('unit', 'month');
+		if (!in_array($unit, array('month', 'year')))
+			throw new Exception('Unsupported unit. Available units are \'month\' or \'year\'');
+
+		// Set date range. Regex handling for params as years
+		$from = $this->fetchParam('from', '-2 years');
+		$from = (preg_match('/^\d{4}$/', $from)) ? mktime(0,0,0,1,1,$from) : strtotime($from);
+		$to = $this->fetchParam('to', '+2 years');
+		$to = (preg_match('/^\d{4}$/', $to)) ? mktime(0,0,0,1,1,$to) : strtotime($to);
+
+		// Selected date
+		$year  = $this->fetchParam('year', $this->blink->get('year'));
+		$month = $this->fetchParam('year', $this->blink->get('month'));
+
+		// Build array
+		$items = array();
+		$current_date = $from;
+		while ($current_date <= $to) {
+			$items[] = array(
+				'date'     => $current_date,
+				'selected' => ("$year-$month" == Date::format('Y-m', $current_date))
+			);
+			$current_date = strtotime("+1 $unit", $current_date);
+		}
+
+		// Tag pair output
+		if ($tag_pair) {
+			return Parse::tagLoop($this->content, $items);
+		}
+
+		// Single tag
+		else {
+			$format      = $this->fetchParam('format', ($unit == 'month') ? 'F Y' : 'Y', null, null, false);
+			$placeholder = $this->fetchParam('placeholder', ($unit == 'month') ? 'Select a month' : 'Select a year', null, null, false);
+
+			$attributes_string = '';
+			if ($attr = $this->fetchParam('attr', false)) {
+				$attributes_array = Helper::explodeOptions($attr, true);
+				foreach ($attributes_array as $key => $value) {
+					$attributes_string .= " {$key}='{$value}'";
+				}
+			}
+
+			$options = '';
+			foreach ($items as $item) {
+				$selected = ($item['selected']) ? 'selected' : '';
+				$options .= '<option value="'.Date::format('Y/m', $item['date']).'" '.$selected.'>'.Date::format($format, $item['date']).'</option>';
+			}
+			return "<select $attributes_string><option value=\"\">$placeholder</option>$options</select>";
+		}
+	}
+
+	public function dates()
+	{
+		return $this->date_select();
+	}
+
 }
