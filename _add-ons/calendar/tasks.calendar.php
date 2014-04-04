@@ -72,13 +72,13 @@ class Tasks_calendar extends Tasks
 		foreach ($entries as $key => $row) {
 			$all_days[$key] = array_get($row, 'all_day');
 			$start_time = array_get($row, 'start_time');
-			$start_time = date('U', strtotime($start_time));
+			$start_time = strtotime($start_time);
 			$start_times[$key] = $start_time;
-			$start_dates[$key] = array($row, 'datestamp');
+			$start_dates[$key] = array_get($row, 'datestamp');
 		}
 		array_multisort(
 			$all_days, SORT_DESC,
-			$start_dates, SORT_DESC,
+			$start_dates, SORT_ASC,
 			$start_times, SORT_ASC,
 			$entries
 		);
