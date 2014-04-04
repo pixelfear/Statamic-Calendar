@@ -5,12 +5,22 @@ class Plugin_calendar extends Plugin
 
 	public function month()
 	{
-		// Get some parameters, defaulting to current date
-		$month = $this->fetchParam('month', date('n'));
-		$year = $this->fetchParam('year', date('Y'));
+		// Get some parameters
+		$month        = $this->fetchParam('month', date('n'));
+		$year         = $this->fetchParam('year', date('Y'));
+		$folder       = $this->fetchParam('folder');
+		$cache_length = $this->fetchParam('cache', 60);
+
+		// Read from cache, if available
+		$cache_filename = 'month-'.$year.'-'.str_pad($month, 2, 0, STR_PAD_LEFT);
+		$cache = $this->cache->getYAML($cache_filename);
+		if ($cache && $this->cache->getAge($cache_filename) < $cache_length) {
+			return $cache;
+		} else {
+			$this->cache->delete($cache_filename);
+		}
 
 		// Get entries
-		$folder = $this->fetchParam('folder');
 		$entries_set = ContentService::getContentByFolders($folder);
 		$entries_set->filter(array(
 			'type' => 'entries'
@@ -109,6 +119,9 @@ class Plugin_calendar extends Plugin
 			'days_of_week' => $this->tasks->getDayNames(),
 			'weeks' => $weeks
 		);
+
+		// Save to cache
+		$this->cache->putYAML($cache_filename, $calendar_data);
 
 		return Parse::template($this->content, $calendar_data);
 	}
