@@ -64,6 +64,7 @@ class Plugin_calendar extends Plugin
 			$day_data = array(
 				'date'              => $date,
 				'day'               => $current_day,
+				'today'             => ($date == strtotime('today')),
 				'first_day_of_week' => ($day_of_week == 0),
 				'has_entries'       => (bool) $entries_set->count(),
 				'total_entries'     => count($entries),
