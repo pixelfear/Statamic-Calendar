@@ -98,6 +98,8 @@ Param | Description
 `folder` | Folder(s) to look for entries. Separate multiple folders by the pipe `|` character.
 `cache` | This tag does a lot of work. You will want to cache it. Specify time in seconds. Defaults to 60.
 
+When `inherit` is `true`, the other fields can be omitted. They'll be taken from the `set_month` tag.
+
 #### Example
 See 'Set up templates' above for an example.
 
@@ -114,4 +116,81 @@ Assuming your URL is something like `/calendar/month/2014/05` and you have set u
 ~~~
 <h1>{{ calendar:month_name }} {{ segment_3 }}</h1>
 Outputs: <h1>May 2014</h1>
+~~~
+
+===
+
+### Next Month
+Outputs data about the next month.
+
+#### Parameters
+No parameters. When using the `set_month` tag, this tag will become aware.
+
+#### Example
+Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
+~~~
+{{ calendar:next_month }}
+<a href="/calendar/month/{{ year }}/{{ month }}" title="{{ month_name }} {{ year }}">Next</a>
+{{ /calendar:next_month }}
+
+Outputs: <a href="/calendar/month/2014/06" title="June 2014">Next</a>
+~~~
+
+### Previous Month
+Outputs data about the previous month.
+
+#### Parameters
+No parameters. When using the `set_month` tag, this tag will become aware.
+
+#### Example
+Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
+~~~
+{{ calendar:prev_month }}
+<a href="/calendar/month/{{ year }}/{{ month }}" title="{{ month_name }} {{ year }}">Previous</a>
+{{ /calendar:prev_month }}
+
+Outputs: <a href="/calendar/month/2014/04" title="April 2014">Previous</a>
+~~~
+
+===
+
+### Date Select
+Outputs a date selection field.  
+When used as a single tag, it will output a `<select>` element. When used as a tag pair, the contents will be parsed for you.
+
+#### Parameters
+
+Param | Description
+--- | ---
+`year` | 4 digit year. Defaults to whatever is set in the `set_month` tag.
+`month` | 2 digit month. Defaults to whatever is set in the `set_month` tag.
+`unit` | The interval time unit. Either `month` or `year`. Defaults to `month`.
+`from` | The start of the date range. Use plain english or a date. Defaults to `-2 years`. 
+`to` | The end of the date range. Use plain english or a date. Defaults to `+2 years`.
+`attr` | HTML attributes to be added to the `<select>` when using the single tag mode. Pipe separate key:value pairs. eg. `class:date|name:month`.
+`format` | When using single tag mode, this dictates the content of the `<option>` tags. Specify a [PHP date](http://php.net/manual/en/function.date.php) format. Defaults to `F Y` when using `month` units or `Y` when using `year` units.
+`placeholder` | When using single tag mode, this dictates the label of the first `<option>`. Defaults to `Select a month` or `Select a year` when using `month` or `year` units respectively.
+
+#### Variables
+
+Var | Description
+--- | ---
+`date` | The date in `Y-m` format (eg. 2014-05)
+`selected` | Returns `true` if the current iteration of matches the specified `year` and `month`.
+
+
+#### Example
+
+~~~
+{{ calendar:date_select attr="class:date-select" year="2014" month="05" from="-2 months" to="+2 months" }}
+
+Outputs:
+<select class="date-select">
+  <option>Select month</option>
+  <option value="2014/03">March 2014</option>
+  <option value="2014/04">April 2014</option>
+  <option value="2014/05" selected>May 2014</option>
+  <option value="2014/06">June 2014</option>
+  <option value="2014/07">July 2014</option>
+</select>
 ~~~
