@@ -90,24 +90,18 @@ Provides the ability to output a calendar month.
 
 #### Parameters
 
-`inherit`
-: Whether or not to inherit from the `set_month` tag. Defaults to `false`.
-
-`month`
-: 2 digit month.
-
-`year`
-: 4 digit year.
-
-`folder`
-: Folder(s) to look for entries. Separate multiple folders by the pipe `|` character.
-
-`cache`
-: This tag does a lot of work. You will want to cache it. Specify time in seconds. Defaults to 60.
+Param | Description
+--- | ---
+`inherit` | Whether or not to inherit from the `set_month` tag. Defaults to `false`.
+`month` | 2 digit month.
+`year` | 4 digit year.
+`folder` | Folder(s) to look for entries. Separate multiple folders by the pipe `|` character.
+`cache` | This tag does a lot of work. You will want to cache it. Specify time in seconds. Defaults to 60.
 
 #### Example
 See 'Set up templates' above for an example.
 
+===
 
 ### Month name
 Outputs the specified month. It will get the data from the `set_month` tag.
