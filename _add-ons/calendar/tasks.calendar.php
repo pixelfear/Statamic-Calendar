@@ -39,14 +39,12 @@ class Tasks_calendar extends Tasks
 		});
 
 		// Add a 'first_day' boolean
-		$entries_set->customSupplement('first_day', function($entry_url) use ($date) {
-			$entry = Content::get($entry_url);
+		$entries_set->customSupplement('first_day', function($entry) use ($date) {
 			return $entry['datestamp'] == $date;
 		});
 
 		// Add a 'last_day' boolean
-		$entries_set->customSupplement('last_day', function($entry_url) use ($date) {
-			$entry = Content::get($entry_url);
+		$entries_set->customSupplement('last_day', function($entry) use ($date) {
 			if ($end_date = array_get($entry, 'end_date')) {
 				return Date::resolve($end_date) == $date;
 			} else {
@@ -55,8 +53,7 @@ class Tasks_calendar extends Tasks
 		});
 
 		// Add an 'all_day' boolean
-		$entries_set->customSupplement('all_day', function($entry_url) use ($date) {
-			$entry = Content::get($entry_url);
+		$entries_set->customSupplement('all_day', function($entry) use ($date) {
 			$start_time = array_get($entry, 'start_time');
 			$end_time = array_get($entry, 'end_time');
 			return !($start_time || $end_time);
