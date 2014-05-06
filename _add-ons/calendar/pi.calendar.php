@@ -38,7 +38,7 @@ class Plugin_calendar extends Plugin
 	public function month()
 	{
 		// Get some parameters
-		$inherit      = $this->fetchParam('inherit', false);
+		$inherit      = $this->fetchParam('inherit', false, null, true);
 		$month        = ($inherit) ? $this->blink->get('month')  : $this->fetchParam('month', date('n'));
 		$year         = ($inherit) ? $this->blink->get('year')   : $this->fetchParam('year', date('Y'));
 		$folder       = ($inherit) ? $this->blink->get('folder') : $this->fetchParam('folder');
