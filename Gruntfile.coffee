@@ -1,13 +1,14 @@
 module.exports = ->
 
 	@initConfig
+		sandbox: '/users/jason/sites/statamic-sandbox'
 		copy:
 			sandbox:
 				files: [
 					expand: true
 					cwd: '_add-ons/calendar/'
 					src: '**'
-					dest: '/users/jason/sites/statamic-sandbox/_add-ons/calendar/'
+					dest: '<%= sandbox %>/_add-ons/calendar/'
 				]
 		watch:
 			options:
@@ -15,6 +16,8 @@ module.exports = ->
 			php:
 				files: ['_add-ons/calendar/*.php']
 				tasks: ['copy']
+			sandbox:
+			  files: ['<%= sandbox %>/{_content,_themes}/**/*.*']
 
 	@loadNpmTasks 'grunt-contrib-watch'
 	@loadNpmTasks 'grunt-contrib-copy'
