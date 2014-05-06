@@ -81,3 +81,43 @@ This does a number of things:
 7. It shows the start and end times if it isn't an all day event.
 
 Your mileage may vary. You will probably need at least steps 1-3.
+
+
+## Tags
+
+### Month
+Provides the ability to output a calendar month.
+
+#### Parameters
+
+`inherit`
+: Whether or not to inherit from the `set_month` tag. Defaults to `false`.
+
+`month`
+: 2 digit month.
+
+`year`
+: 4 digit year.
+
+`folder`
+: Folder(s) to look for entries. Separate multiple folders by the pipe `|` character.
+
+`cache`
+: This tag does a lot of work. You will want to cache it. Specify time in seconds. Defaults to 60.
+
+#### Example
+See 'Set up templates' above for an example.
+
+
+### Month name
+Outputs the specified month. It will get the data from the `set_month` tag.
+
+#### Parameters
+No parameters. When using the `set_month` tag, this tag will become aware.
+
+#### Example
+Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
+~~~
+<h1>{{ calendar:month_name }} {{ segment_3 }}</h1>
+Outputs: <h1>May 2014</h1>
+~~~
