@@ -175,7 +175,7 @@ Param | Description
 
 Var | Description
 --- | ---
-`date` | The date in `Y-m` format (eg. 2014-05)
+`date` | The date of the iteration. Use `format="..."` to display it.
 `selected` | Returns `true` if the current iteration of matches the specified `year` and `month`.
 
 
