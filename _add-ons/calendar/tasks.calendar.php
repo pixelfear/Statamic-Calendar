@@ -8,6 +8,12 @@ class Tasks_calendar extends Tasks
 	 */
 	private $complete_entries_set;
 
+	//---------------------------------------------
+
+	/**
+	 * Get the names of the days of the week
+	 * @return array
+	 */
 	public function getDayNames()
 	{
 		foreach (array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat') as $day) {
@@ -16,11 +22,24 @@ class Tasks_calendar extends Tasks
 		return $days_of_week;
 	}
 
+	//---------------------------------------------
+
+	/**
+	 * Sets the complete entries set
+	 * @param ContentSet $value Filtered ContentSet
+	 */
 	public function setEntries($value)
 	{
 		$this->complete_entries_set = $value;
 	}
 
+	//---------------------------------------------
+
+	/**
+	 * Gets the entries for a specific day
+	 * @param  string $date DateTime
+	 * @return array
+	 */
 	public function getDayEntries($date)
 	{
 		$entries_set = clone $this->complete_entries_set;

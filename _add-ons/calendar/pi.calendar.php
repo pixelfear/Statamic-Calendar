@@ -3,6 +3,10 @@
 class Plugin_calendar extends Plugin
 {
 
+	/**
+	 * Redirect to a date URL
+	 * @return void
+	 */
 	public function redirect()
 	{
 		$url = $this->fetchParam('url');
@@ -11,6 +15,12 @@ class Plugin_calendar extends Plugin
 		URL::redirect($full_url);
 	}
 
+	//---------------------------------------------
+
+	/**
+	 * Sets the month for future tags
+	 * @return void
+	 */
 	public function set_month()
 	{
 		$this->blink->set('month',        $this->fetchParam('month', date('n')) );
@@ -19,6 +29,12 @@ class Plugin_calendar extends Plugin
 		$this->blink->set('cache_length', $this->fetchParam('cache', 60) );
 	}
 
+	//---------------------------------------------
+
+	/**
+	 * Provides the ability to output a calendar month
+	 * @return string Parsed template HTML
+	 */
 	public function month()
 	{
 		// Get some parameters
@@ -143,6 +159,12 @@ class Plugin_calendar extends Plugin
 		return Parse::template($this->content, $calendar_data);
 	}
 
+	//---------------------------------------------
+
+	/**
+	 * Outputs the specified month nae
+	 * @return string
+	 */
 	public function month_name()
 	{
 		$month   = $this->blink->get('month');
@@ -150,6 +172,12 @@ class Plugin_calendar extends Plugin
 		return Date::format('F', $year.'-'.$month.'-01');
 	}
 
+	//---------------------------------------------
+
+	/**
+	 * Outputs data about the next month
+	 * @return string Parsed template HTML
+	 */
 	public function next_month()
 	{
 		$month   = $this->blink->get('month');
@@ -163,6 +191,10 @@ class Plugin_calendar extends Plugin
 		return Parse::template($this->content, $vars);
 	}
 
+	/**
+	 * Outputs data about the previous month
+	 * @return string Parsed template HTML
+	 */
 	public function prev_month()
 	{
 		$month   = $this->blink->get('month');
@@ -176,6 +208,12 @@ class Plugin_calendar extends Plugin
 		return Parse::template($this->content, $vars);
 	}
 
+	//---------------------------------------------
+
+	/**
+	 * Outputs a date selection field
+	 * @return string Either a <select> field or parsed template HTML
+	 */
 	public function date_select()
 	{
 		// Single tag or tag pair?
@@ -234,6 +272,10 @@ class Plugin_calendar extends Plugin
 		}
 	}
 
+	/**
+	 * Alias of date_select
+	 * @return string
+	 */
 	public function dates()
 	{
 		return $this->date_select();
