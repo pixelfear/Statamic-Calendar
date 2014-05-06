@@ -11,8 +11,7 @@
 
 * Recurring events
 
-They are hard.  
-With a database they are hard. Without a database? Harder.
+**They are hard.** With a database they are hard. Without a database? Harder.  
 If you have some suggestions on how to handle it, I'm open to ideas.
 
 ## Usage
