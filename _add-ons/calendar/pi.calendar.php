@@ -232,7 +232,7 @@ class Plugin_calendar extends Plugin
 
 		// Selected date
 		$year  = $this->fetchParam('year', $this->blink->get('year'));
-		$month = $this->fetchParam('year', $this->blink->get('month'));
+		$month = $this->fetchParam('month', $this->blink->get('month'));
 
 		// Build array
 		$items = array();
