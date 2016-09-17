@@ -72,7 +72,10 @@ class Plugin_calendar extends Plugin
 		$current_day = 1;
 
 		// Populate previous month days.
-		$i = $day_of_week;
+		$i               = $day_of_week;
+		$prev_month_year = (($month-1) == 0) ? $year-1 : $year;
+		$prev_month      = Date::format('m', $prev_month_year.'-'.($month-1).'-01');
+		$prev_month_name = Date::format('F', "{$prev_month_year}-{$prev_month}-01");
 		while ($i>0) {
 			$date = mktime(0, 0, 0, $month, 1-$i, $year);
 			$entries = $this->tasks->getDayEntries($date);
@@ -82,9 +85,12 @@ class Plugin_calendar extends Plugin
 				'other_month'       => true,
 				'prev_month'        => true,
 				'first_day_of_week' => ($day_of_week-$i == 0),
-				'has_entries'       => (bool) $entries_set->count(),
+				'has_entries'       => (bool) count($entries),
 				'total_entries'     => count($entries),
-				'entries'           => $entries
+				'entries'           => $entries,
+				'year'              => $prev_month_year,
+				'month'             => $prev_month,
+				'month_name'        => $prev_month_name
 			);
 			// Make outer variables that may be useful available to the entries loop
 			array_walk($day_data['entries'], function(&$item) use ($day_data) {
@@ -95,6 +101,7 @@ class Plugin_calendar extends Plugin
 		}
 
 		// Populate the month
+		$month_name = Date::format('F', $year.'-'.$month.'-01');
 		while ($current_day	<= $days_in_month) {
 			// Seventh day reached. Start a new week.
 			if ($day_of_week == 7) {
@@ -109,9 +116,12 @@ class Plugin_calendar extends Plugin
 				'day'               => $current_day,
 				'today'             => ($date == strtotime('today')),
 				'first_day_of_week' => ($day_of_week == 0),
-				'has_entries'       => (bool) $entries_set->count(),
+				'has_entries'       => (bool) count($entries),
 				'total_entries'     => count($entries),
-				'entries'           => $entries
+				'entries'           => $entries,
+				'year'              => $year,
+				'month'             => $month,
+				'month_name'        => $month_name
 			);
 
 			// Make outer variables that may be useful available to the entries loop
@@ -130,6 +140,9 @@ class Plugin_calendar extends Plugin
 		// become the 1st of next month. How convenient!
 		if ($day_of_week != 7) {
 			$remaining_days = 7-$day_of_week;
+			$next_month_year = (($month+1) == 13) ? $year+1 : $year;
+			$next_month      = (($month+1) == 13) ? '01' : str_pad($month+1, 2, 0, STR_PAD_LEFT);
+			$next_month_name = Date::format('F', "{$next_month_year}-{$next_month}-01");
 			while ($remaining_days > 0) {
 				$date = mktime(0, 0, 0, $month, $current_day, $year);
 				$entries = $this->tasks->getDayEntries($date);
@@ -138,9 +151,12 @@ class Plugin_calendar extends Plugin
 					'day'           => Date::format('j', $date),
 					'other_month'   => true,
 					'next_month'    => true,
-					'has_entries'   => (bool) $entries_set->count(),
+					'has_entries'   => (bool) count($entries),
 					'total_entries' => count($entries),
-					'entries'       => $entries
+					'entries'       => $entries,
+					'year'          => $next_month_year,
+					'month'         => $next_month,
+					'month_name'    => $next_month_name
 				);
 				$weeks[$week]['days'][] = $day_data;
 				$remaining_days--;
