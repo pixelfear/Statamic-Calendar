@@ -84,7 +84,12 @@ class Tasks_calendar extends Tasks
 		});
 
 		// Turn into an array
-		$entries = $entries_set->extract();
+		$entries = $entries_set->get(true, false);
+
+		// Remove Statamic's iteration values because they will be wrong once the sort is done
+		foreach ($entries as &$entry) {
+			unset($entry['first'], $entry['last'], $entry['count'], $entry['total_results']);
+		}
 
 		// Sort by all day entries first, then by time
 		$all_days = array();
@@ -103,6 +108,18 @@ class Tasks_calendar extends Tasks
 			$start_times, SORT_ASC,
 			$entries
 		);
+
+		// Re-add some iteration values
+		$total_entries = count($entries);
+		foreach ($entries as $i => &$entry) {
+			$entry['zero_index'] = $i;
+			$entry['count'] = $i+1;
+			$entry['index'] = $i+1;
+			$entry['total_results'] = $total_entries;
+			$entry['total_entries'] = $total_entries;
+			$entry['first'] = ($i == 0);
+			$entry['last'] = ($i+1 == $total_entries);
+		}
 
 		return $entries;
 	}
