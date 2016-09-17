@@ -134,7 +134,7 @@ Outputs data about the next month.
 No parameters. When using the `set` tag, this tag will become aware.
 
 ### Example
-Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
+Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set` tag:
 
 ```
 {{ calendar:next_month }}
@@ -144,22 +144,12 @@ Assuming your URL is something like `/calendar/month/2014/05` and you have set u
 Outputs: <a href="/calendar/month/2014/06" title="June 2014">Next</a>
 ```
 
+
 ## Previous Month Tag
 Outputs data about the previous month.
 
-### Parameters
-No parameters. When using the `set_month` tag, this tag will become aware.
+Works the same as the `next_month` tag, but in the opposite direction.
 
-### Example
-Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
-
-```
-{{ calendar:prev_month }}
-<a href="/calendar/month/{{ year }}/{{ month }}" title="{{ month_name }} {{ year }}">Previous</a>
-{{ /calendar:prev_month }}
-
-Outputs: <a href="/calendar/month/2014/04" title="April 2014">Previous</a>
-```
 
 ## Date Select Tag
 Outputs a date selection field.  
