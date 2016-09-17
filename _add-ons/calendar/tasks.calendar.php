@@ -37,6 +37,35 @@ class Tasks_calendar extends Tasks
 
 	//---------------------------------------------
 
+
+	/**
+	 * Gets entries for a particular month
+	 * @param  int $month 2 digit month
+	 * @param  int $year  4 digit year
+	 * @return array
+	 */
+	public function getMonthEntries($month, $year)
+	{
+		$entries_set = clone $this->complete_entries_set;
+		$month = Carbon::create($year, $month)->startOfMonth();
+
+		// Only allow events that occur this month
+		$entries_set->customFilter(function($entry) use ($month) {
+			$start_date    = Carbon::createFromTimeStamp($entry['datestamp'])->startOfMonth();
+			$end_datestamp = (isset($entry['end_date'])) ? Date::resolve($entry['end_date']) : $entry['datestamp'];
+			$end_date      = Carbon::createFromTimeStamp($end_datestamp);
+			$multi_day     = ($end_date->timestamp != $start_date->timestamp);
+
+			if ($multi_day) {
+				return ($start_date->timestamp <= $month->timestamp && $end_date->startOfMonth()->timestamp >= $month->timestamp);
+			} else {
+				return ($start_date->timestamp == $month->timestamp);
+			}
+		});
+
+		return $entries_set->get(true, false);
+	}
+
 	/**
 	 * Gets the entries for a specific day
 	 * @param  string $date DateTime
