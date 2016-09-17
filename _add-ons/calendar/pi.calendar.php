@@ -29,6 +29,11 @@ class Plugin_calendar extends Plugin
 		$this->blink->set('folder',       $this->fetchParam('folder') );
 		$this->blink->set('cache',        $this->fetchParam('cache', 60) );
 	}
+	
+	public function set()
+	{
+		$this->set_month();
+	}
 
 	//---------------------------------------------
 
