@@ -162,7 +162,7 @@ class Plugin_calendar extends Plugin
 	//---------------------------------------------
 
 	/**
-	 * Outputs the specified month nae
+	 * Outputs the specified month name
 	 * @return string
 	 */
 	public function month_name()
