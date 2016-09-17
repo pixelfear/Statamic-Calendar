@@ -25,7 +25,7 @@ You should keep your events in a folder, and they should be saved as date-based 
 Depending on the feature/tag you want to use, follow the appropriate template example.
 
 
-## Set Tag
+## Set Tag `{{ calendar:set }}`
 Allows you to set the date once in your template when using multiple calendar tags.
 
 ### Parameters
@@ -48,7 +48,7 @@ Now that the set tag has been used, you don't need to re-specify the date on oth
 Note: in previous versions of Calendar, this was `set_month`. It does the same thing.
 
 
-## Month Tag
+## Month Tag `{{ calendar:month }}`
 Provides the ability to output a calendar month.
 
 ### Parameters
@@ -113,7 +113,7 @@ This does a number of things:
 Your mileage may vary. You will probably need at least steps 1-3.
 
 
-## Month Name Tag
+## Month Name Tag `{{ calendar:month_name }}`
 Outputs the specified month. It will get the data from the `set` tag.
 
 ### Parameters
@@ -127,7 +127,7 @@ Assuming your URL is something like `/calendar/month/2014/05` and you have set u
 Outputs: <h1>May 2014</h1>
 ```
 
-## Next Month Tag
+## Next Month Tag `{{ calendar:next_month }}`
 Outputs data about the next month.
 
 ### Parameters
@@ -145,13 +145,13 @@ Outputs: <a href="/calendar/month/2014/06" title="June 2014">Next</a>
 ```
 
 
-## Previous Month Tag
+## Previous Month Tag `{{ calendar:prev_month }}`
 Outputs data about the previous month.
 
 Works the same as the `next_month` tag, but in the opposite direction.
 
 
-## Date Select Tag
+## Date Select Tag `{{ calendar:date_select }}`
 Outputs a date selection field.  
 When used as a single tag, it will output a `<select>` element. When used as a tag pair, the contents will be parsed for you.
 
@@ -192,7 +192,7 @@ Outputs:
 </select>
 ```
 
-## Month Entries Tag
+## Month Entries Tag `{{ calendar:month_entries }}`
 Outputs entries for a specific month.
 
 ### Parameters
@@ -236,7 +236,7 @@ Var | Description
 {{ /calendar:month_entries }}
 ```
 
-## Day Entries Tag
+## Day Entries Tag `{{ calendar:day_entries }}`
 Outputs entries for a specific day.
 
 ### Parameters
