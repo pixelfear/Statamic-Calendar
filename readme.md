@@ -25,7 +25,9 @@ You should keep your events in a folder, and they should be saved as date-based 
 Depending on the feature/tag you want to use, follow the appropriate template example.
 
 
-## Set Tag `{{ calendar:set }}`
+## Set Tag 
+`{{ calendar:set }}`
+
 Allows you to set the date once in your template when using multiple calendar tags.
 
 ### Parameters
@@ -48,11 +50,12 @@ Now that the set tag has been used, you don't need to re-specify the date on oth
 Note: in previous versions of Calendar, this was `set_month`. It does the same thing.
 
 
-## Month Tag `{{ calendar:month }}`
+## Month Tag 
+`{{ calendar:month }}`
+
 Provides the ability to output a calendar month.
 
 ### Parameters
-
 Param | Description
 --- | ---
 `inherit` | Whether or not to inherit from the `set` tag. Defaults to `false`.
@@ -64,7 +67,6 @@ Param | Description
 When `inherit` is `true`, the other parameters can be omitted. They'll be taken from the `set` tag.
 
 ### Example
-
 The following will output a traditional calendar month view, and assumes you are on a URL like `/calendar/month/2016/05`.
 
 ```
@@ -113,7 +115,9 @@ This does a number of things:
 Your mileage may vary. You will probably need at least steps 1-3.
 
 
-## Month Name Tag `{{ calendar:month_name }}`
+## Month Name Tag 
+`{{ calendar:month_name }}`
+
 Outputs the specified month. It will get the data from the `set` tag.
 
 ### Parameters
@@ -127,7 +131,9 @@ Assuming your URL is something like `/calendar/month/2014/05` and you have set u
 Outputs: <h1>May 2014</h1>
 ```
 
-## Next Month Tag `{{ calendar:next_month }}`
+## Next Month Tag 
+`{{ calendar:next_month }}`
+
 Outputs data about the next month.
 
 ### Parameters
@@ -145,18 +151,21 @@ Outputs: <a href="/calendar/month/2014/06" title="June 2014">Next</a>
 ```
 
 
-## Previous Month Tag `{{ calendar:prev_month }}`
+## Previous Month Tag 
+`{{ calendar:prev_month }}`
+
 Outputs data about the previous month.
 
 Works the same as the `next_month` tag, but in the opposite direction.
 
 
-## Date Select Tag `{{ calendar:date_select }}`
+## Date Select Tag 
+`{{ calendar:date_select }}`
+
 Outputs a date selection field.  
 When used as a single tag, it will output a `<select>` element. When used as a tag pair, the contents will be parsed for you.
 
 ### Parameters
-
 Param | Description
 --- | ---
 `year` | 4 digit year. Defaults to whatever is set in the `set` tag.
@@ -169,15 +178,12 @@ Param | Description
 `placeholder` | When using single tag mode, this dictates the label of the first `<option>`. Defaults to `Select a month` or `Select a year` when using `month` or `year` units respectively.
 
 ### Variables
-
 Var | Description
 --- | ---
 `date` | The date of the iteration. Use `format="..."` to display it.
 `selected` | Returns `true` if the current iteration of matches the specified `year` and `month`.
 
-
 ### Example
-
 ```
 {{ calendar:date_select attr="class:date-select" year="2014" month="05" from="-2 months" to="+2 months" }}
 
@@ -192,11 +198,13 @@ Outputs:
 </select>
 ```
 
-## Month Entries Tag `{{ calendar:month_entries }}`
+
+## Month Entries Tag 
+`{{ calendar:month_entries }}`
+
 Outputs entries for a specific month.
 
 ### Parameters
-
 Param | Description
 --- | ---
 `inherit` | Whether or not to inherit from the `set` tag. Defaults to `false`.
@@ -208,7 +216,6 @@ Param | Description
 When `inherit` is `true`, the other parameters can be omitted. They'll be taken from the `set` tag.
 
 ### Variables
-
 In addition to your entry’s variables, the following single variables are available inside your calendar:month_entries tag.
 
 Var | Description
@@ -219,7 +226,6 @@ Var | Description
 `total_results` | The total number of entries.
 
 ### Example
-
 ```
 {{ calendar:month_entries folder="calendar" year="{ segment_3 }" month="{ segment_4 }" }}
   {{ if no_results }}
@@ -236,7 +242,10 @@ Var | Description
 {{ /calendar:month_entries }}
 ```
 
-## Day Entries Tag `{{ calendar:day_entries }}`
+
+## Day Entries Tag
+`{{ calendar:day_entries }}`
+
 Outputs entries for a specific day.
 
 ### Parameters
