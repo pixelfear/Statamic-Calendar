@@ -1,33 +1,21 @@
 # Calendar
-> Calendar entries for Statamic
+> Calendar entries for Statamic V1
 
-## What this does
+## Features
 
 * Display your date-based entries in a monthly calendar format
 * Cycle through months of a year
-* Map months to URLs
+* Output entries for a given month or day
+* Map months and/or days to URLs
 
-## What this *doesn't* do
+This addon intentionally does _not_ handle recurring events.  
+If you have some suggestions on how to handle it, feel free to open a pull request.
 
-* Recurring events
-
-**They are hard.** With a database they are hard. Without a database? Harder.  
-If you have some suggestions on how to handle it, I'm open to ideas.
 
 ## Usage
 
-### Set up your monthly calendar routing.
-Assuming you want to have URLs like `/calendar/month/2014/05` for May 2014, you'll need to add this to your `_config/routes.yaml`:
-
-~~~
-routes:
-  /calendar/month/*: calendar_month
-~~~
-
-This says: for any URL that starts with `/calendar/month/`, display the `calendar_month` template.
-
 ### Set up fields and data
-You should keep your events in a folder (you *can* use multiple folders), and they should be saved as date-based entries. eg. `/_content/events/2013-12-31-new-years-eve-party`.
+You should keep your events in a folder, and they should be saved as date-based entries. eg. `/_content/events/2013-12-31-new-years-eve-party.md`.
 
 * The datestamp of the entry is the start date.
 * An optional field named `end_date` should contain the end date. (eg 2014-05-03)
@@ -35,9 +23,31 @@ You should keep your events in a folder (you *can* use multiple folders), and th
 * An optional field named `end_time` should contain the end time (eg. 3:15pm)
 
 ### Set up templates
-If you're creating a month calendar view, you'll want something along these lines:
+Depending on the feature/tag you want to use, follow the appropriate template example.
 
-~~~
+
+## Tags
+
+### Month
+Provides the ability to output a calendar month.
+
+#### Parameters
+
+Param | Description
+--- | ---
+`inherit` | Whether or not to inherit from the `set` tag. Defaults to `false`.
+`month` | 2 digit month.
+`year` | 4 digit year.
+`folder` | Folder(s) to look for entries. Separate multiple folders by the pipe `|` character.
+`cache` | This tag does a lot of work. You will want to cache it. Specify time in seconds. Defaults to 60.
+
+When `inherit` is `true`, the other parameters can be omitted. They'll be taken from the `set` tag.
+
+#### Example
+
+The following will output a traditional calendar month view, and assumes you are on a URL like `/calendar/month/2016/05`.
+
+```
 {{ calendar:month folder="calendar" year="{ segment_3 }" month="{ segment_4 }" }}
   <table>
     <thead>
@@ -68,7 +78,7 @@ If you're creating a month calendar view, you'll want something along these line
     </tbody>
   </table>
 {{ /calendar:month }}
-~~~
+```
 
 This does a number of things:
 
@@ -83,58 +93,36 @@ This does a number of things:
 Your mileage may vary. You will probably need at least steps 1-3.
 
 
-## Tags
-
-### Month
-Provides the ability to output a calendar month.
-
-#### Parameters
-
-Param | Description
---- | ---
-`inherit` | Whether or not to inherit from the `set_month` tag. Defaults to `false`.
-`month` | 2 digit month.
-`year` | 4 digit year.
-`folder` | Folder(s) to look for entries. Separate multiple folders by the pipe `|` character.
-`cache` | This tag does a lot of work. You will want to cache it. Specify time in seconds. Defaults to 60.
-
-When `inherit` is `true`, the other fields can be omitted. They'll be taken from the `set_month` tag.
-
-#### Example
-See 'Set up templates' above for an example.
-
-===
-
 ### Month name
-Outputs the specified month. It will get the data from the `set_month` tag.
+Outputs the specified month. It will get the data from the `set` tag.
 
 #### Parameters
-No parameters. When using the `set_month` tag, this tag will become aware.
+No parameters. When using the `set` tag, this tag will become aware.
 
 #### Example
-Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
-~~~
+Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set` tag:
+
+```
 <h1>{{ calendar:month_name }} {{ segment_3 }}</h1>
 Outputs: <h1>May 2014</h1>
-~~~
-
-===
+```
 
 ### Next Month
 Outputs data about the next month.
 
 #### Parameters
-No parameters. When using the `set_month` tag, this tag will become aware.
+No parameters. When using the `set` tag, this tag will become aware.
 
 #### Example
 Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
-~~~
+
+```
 {{ calendar:next_month }}
 <a href="/calendar/month/{{ year }}/{{ month }}" title="{{ month_name }} {{ year }}">Next</a>
 {{ /calendar:next_month }}
 
 Outputs: <a href="/calendar/month/2014/06" title="June 2014">Next</a>
-~~~
+```
 
 ### Previous Month
 Outputs data about the previous month.
@@ -144,15 +132,14 @@ No parameters. When using the `set_month` tag, this tag will become aware.
 
 #### Example
 Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
-~~~
+
+```
 {{ calendar:prev_month }}
 <a href="/calendar/month/{{ year }}/{{ month }}" title="{{ month_name }} {{ year }}">Previous</a>
 {{ /calendar:prev_month }}
 
 Outputs: <a href="/calendar/month/2014/04" title="April 2014">Previous</a>
-~~~
-
-===
+```
 
 ### Date Select
 Outputs a date selection field.  
@@ -162,8 +149,8 @@ When used as a single tag, it will output a `<select>` element. When used as a t
 
 Param | Description
 --- | ---
-`year` | 4 digit year. Defaults to whatever is set in the `set_month` tag.
-`month` | 2 digit month. Defaults to whatever is set in the `set_month` tag.
+`year` | 4 digit year. Defaults to whatever is set in the `set` tag.
+`month` | 2 digit month. Defaults to whatever is set in the `set` tag.
 `unit` | The interval time unit. Either `month` or `year`. Defaults to `month`.
 `from` | The start of the date range. Use plain english or a date. Defaults to `-2 years`. 
 `to` | The end of the date range. Use plain english or a date. Defaults to `+2 years`.
@@ -181,7 +168,7 @@ Var | Description
 
 #### Example
 
-~~~
+```
 {{ calendar:date_select attr="class:date-select" year="2014" month="05" from="-2 months" to="+2 months" }}
 
 Outputs:
@@ -193,4 +180,57 @@ Outputs:
   <option value="2014/06">June 2014</option>
   <option value="2014/07">July 2014</option>
 </select>
-~~~
+```
+
+### Month Entries
+Outputs entries for a specific month.
+
+#### Parameters
+
+Param | Description
+--- | ---
+`inherit` | Whether or not to inherit from the `set` tag. Defaults to `false`.
+`month` | 2 digit month.
+`year` | 4 digit year.
+`folder` | Folder(s) to look for entries. Separate multiple folders by the pipe `|` character.
+`cache` | This tag does a lot of work. You will want to cache it. Specify time in seconds. Defaults to 60.
+
+When `inherit` is `true`, the other parameters can be omitted. They'll be taken from the `set` tag.
+
+#### Variables
+
+In addition to your entry’s variables, the following single variables are available inside your calendar:month_entries tag.
+
+Var | Description
+--- | ---
+`count` | Current count of the entry being displayed.
+`first` | `true` if the first entry in the list
+`last` | `true` if the last entry in the list
+`total_results` | The total number of entries.
+
+#### Example
+
+```
+{{ calendar:month_entries folder="calendar" year="{ segment_3 }" month="{ segment_4 }" }}
+  {{ if no_results }}
+    <p>There are no entries this month.</p>
+  {{ else }}
+    {{ if first }}
+      <ul>
+    {{ endif }}
+        <li>{{ title }}</li>
+    {{ if last }}
+      </ul>
+    {{ endif }}
+  {{ endif }}
+{{ /calendar:month_entries }}
+```
+
+### Day Entries
+Outputs entries for a specific day.
+
+#### Parameters
+Same as the `month_entries` tag, but also accepts a 2 digit `day`.
+
+#### Variables
+Same as the `month_entries` tag.
