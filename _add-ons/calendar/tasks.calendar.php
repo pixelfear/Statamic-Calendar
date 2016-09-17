@@ -1,5 +1,7 @@
 <?php
 
+use \Carbon\Carbon;
+
 class Tasks_calendar extends Tasks
 {
 
@@ -46,8 +48,11 @@ class Tasks_calendar extends Tasks
 
 		// Only allow events that occur today (or today is within the event date range)
 		$entries_set->customFilter(function($entry) use ($date) {
-			$start_date = $entry['datestamp'];
-			$end_date   = (isset($entry['end_date'])) ? Date::resolve($entry['end_date']) : $entry['datestamp'];
+			// Reset timestamps to start of the day to make comparisons consitent when `_entry_timestamps` is true.
+			$start_date = Carbon::createFromTimeStamp($entry['datestamp'])->startOfDay()->timestamp;
+			$end_date   = (isset($entry['end_date']))
+			              ? Date::resolve($entry['end_date'])
+			              : Carbon::createFromTimeStamp($entry['datestamp'])->startOfDay()->timestamp;
 			$multi_day  = ($end_date != $start_date);
 
 			if ($multi_day) {
