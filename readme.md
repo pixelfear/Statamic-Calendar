@@ -26,12 +26,10 @@ You should keep your events in a folder, and they should be saved as date-based 
 Depending on the feature/tag you want to use, follow the appropriate template example.
 
 
-## Tags
-
-### Month
+## Month Tag
 Provides the ability to output a calendar month.
 
-#### Parameters
+### Parameters
 
 Param | Description
 --- | ---
@@ -43,7 +41,7 @@ Param | Description
 
 When `inherit` is `true`, the other parameters can be omitted. They'll be taken from the `set` tag.
 
-#### Example
+### Example
 
 The following will output a traditional calendar month view, and assumes you are on a URL like `/calendar/month/2016/05`.
 
@@ -93,13 +91,13 @@ This does a number of things:
 Your mileage may vary. You will probably need at least steps 1-3.
 
 
-### Month name
+## Month Name Tag
 Outputs the specified month. It will get the data from the `set` tag.
 
-#### Parameters
+### Parameters
 No parameters. When using the `set` tag, this tag will become aware.
 
-#### Example
+### Example
 Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set` tag:
 
 ```
@@ -107,13 +105,13 @@ Assuming your URL is something like `/calendar/month/2014/05` and you have set u
 Outputs: <h1>May 2014</h1>
 ```
 
-### Next Month
+## Next Month Tag
 Outputs data about the next month.
 
-#### Parameters
+### Parameters
 No parameters. When using the `set` tag, this tag will become aware.
 
-#### Example
+### Example
 Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
 
 ```
@@ -124,13 +122,13 @@ Assuming your URL is something like `/calendar/month/2014/05` and you have set u
 Outputs: <a href="/calendar/month/2014/06" title="June 2014">Next</a>
 ```
 
-### Previous Month
+## Previous Month Tag
 Outputs data about the previous month.
 
-#### Parameters
+### Parameters
 No parameters. When using the `set_month` tag, this tag will become aware.
 
-#### Example
+### Example
 Assuming your URL is something like `/calendar/month/2014/05` and you have set up the `set_month` tag:
 
 ```
@@ -141,11 +139,11 @@ Assuming your URL is something like `/calendar/month/2014/05` and you have set u
 Outputs: <a href="/calendar/month/2014/04" title="April 2014">Previous</a>
 ```
 
-### Date Select
+## Date Select Tag
 Outputs a date selection field.  
 When used as a single tag, it will output a `<select>` element. When used as a tag pair, the contents will be parsed for you.
 
-#### Parameters
+### Parameters
 
 Param | Description
 --- | ---
@@ -158,7 +156,7 @@ Param | Description
 `format` | When using single tag mode, this dictates the content of the `<option>` tags. Specify a [PHP date](http://php.net/manual/en/function.date.php) format. Defaults to `F Y` when using `month` units or `Y` when using `year` units.
 `placeholder` | When using single tag mode, this dictates the label of the first `<option>`. Defaults to `Select a month` or `Select a year` when using `month` or `year` units respectively.
 
-#### Variables
+### Variables
 
 Var | Description
 --- | ---
@@ -166,7 +164,7 @@ Var | Description
 `selected` | Returns `true` if the current iteration of matches the specified `year` and `month`.
 
 
-#### Example
+### Example
 
 ```
 {{ calendar:date_select attr="class:date-select" year="2014" month="05" from="-2 months" to="+2 months" }}
@@ -182,10 +180,10 @@ Outputs:
 </select>
 ```
 
-### Month Entries
+## Month Entries Tag
 Outputs entries for a specific month.
 
-#### Parameters
+### Parameters
 
 Param | Description
 --- | ---
@@ -197,7 +195,7 @@ Param | Description
 
 When `inherit` is `true`, the other parameters can be omitted. They'll be taken from the `set` tag.
 
-#### Variables
+### Variables
 
 In addition to your entry’s variables, the following single variables are available inside your calendar:month_entries tag.
 
@@ -208,7 +206,7 @@ Var | Description
 `last` | `true` if the last entry in the list
 `total_results` | The total number of entries.
 
-#### Example
+### Example
 
 ```
 {{ calendar:month_entries folder="calendar" year="{ segment_3 }" month="{ segment_4 }" }}
@@ -226,11 +224,11 @@ Var | Description
 {{ /calendar:month_entries }}
 ```
 
-### Day Entries
+## Day Entries Tag
 Outputs entries for a specific day.
 
-#### Parameters
+### Parameters
 Same as the `month_entries` tag, but also accepts a 2 digit `day`.
 
-#### Variables
+### Variables
 Same as the `month_entries` tag.
