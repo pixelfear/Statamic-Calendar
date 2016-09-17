@@ -1,7 +1,6 @@
 # Calendar
-> Calendar entries for Statamic V1
 
-## Features
+![](https://img.shields.io/badge/statamic-v1-lightgrey.svg?style=flat-square)
 
 * Display your date-based entries in a monthly calendar format
 * Cycle through months of a year
