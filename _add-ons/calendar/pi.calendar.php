@@ -25,6 +25,7 @@ class Plugin_calendar extends Plugin
 	{
 		$this->blink->set('month',        $this->fetchParam('month', date('m')) );
 		$this->blink->set('year',         $this->fetchParam('year', date('Y')) );
+		$this->blink->set('day',          $this->fetchParam('day', date('j')) );
 		$this->blink->set('folder',       $this->fetchParam('folder') );
 		$this->blink->set('cache',        $this->fetchParam('cache', 60) );
 	}
@@ -295,6 +296,60 @@ class Plugin_calendar extends Plugin
 	public function dates()
 	{
 		return $this->date_select();
+	}
+
+	//---------------------------------------------
+
+	public function month_entries()
+	{
+		// Get some parameters
+		$inherit      = $this->fetchParam('inherit', false, null, true);
+		$month        = ($inherit) ? $this->blink->get('month')  : $this->fetchParam('month', date('m'));
+		$year         = ($inherit) ? $this->blink->get('year')   : $this->fetchParam('year', date('Y'));
+		$folder       = ($inherit) ? $this->blink->get('folder') : $this->fetchParam('folder');
+		$cache_length = ($inherit) ? $this->blink->get('cache')  : $this->fetchParam('cache', 60);
+
+		// Get entries
+		$entries_set = ContentService::getContentByFolders($folder);
+		$entries_set->filter(array(
+			'type' => 'entries'
+		));
+		$this->tasks->setEntries($entries_set);
+		$entries = $this->tasks->getMonthEntries($month, $year);
+
+		// No results
+		if (count($entries) == 0) {
+			return Parse::template($this->content, array('no_results' => true));
+		}
+
+
+		return Parse::tagLoop($this->content, $entries);
+	}
+
+	public function day_entries()
+	{
+		// Get some parameters
+		$inherit      = $this->fetchParam('inherit', false, null, true);
+		$month        = ($inherit) ? $this->blink->get('month')  : $this->fetchParam('month', date('m'));
+		$year         = ($inherit) ? $this->blink->get('year')   : $this->fetchParam('year', date('Y'));
+		$day          = ($inherit) ? $this->blink->get('day')    : $this->fetchParam('day', date('j'));
+		$folder       = ($inherit) ? $this->blink->get('folder') : $this->fetchParam('folder');
+		$cache_length = ($inherit) ? $this->blink->get('cache')  : $this->fetchParam('cache', 60);
+
+		// Get entries
+		$entries_set = ContentService::getContentByFolders($folder);
+		$entries_set->filter(array(
+			'type' => 'entries'
+		));
+		$this->tasks->setEntries($entries_set);
+		$entries = $this->tasks->getDayEntries(mktime(0, 0, 0, $month, $day, $year));
+
+		// No results
+		if (count($entries) == 0) {
+			return Parse::template($this->content, array('no_results' => true));
+		}
+
+		return Parse::tagLoop($this->content, $entries);
 	}
 
 }
