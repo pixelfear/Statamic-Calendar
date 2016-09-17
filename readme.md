@@ -25,6 +25,29 @@ You should keep your events in a folder, and they should be saved as date-based 
 Depending on the feature/tag you want to use, follow the appropriate template example.
 
 
+## Set Tag
+Allows you to set the date once in your template when using multiple calendar tags.
+
+### Parameters
+Param | Description
+--- | ---
+`year` | 4 digit year. Defaults to the current year.
+`month` | 2 digit month. Defaults to the current month.
+`day` | 2 digit day. Defaults to the current day.
+`folder` | Folder(s) to look for entries. Pipe delimit multiple folders.
+`cache` | Specify time in seconds. Defaults to 60.
+
+### Example
+```
+{{ calendar:set folder="calendar" year="{ segment_3 }" month="{ segment_4 }" }}
+
+Now that the set tag has been used, you don't need to re-specify the date on other tags:
+{{ calendar:month inherit="true" }}...{{ /calendar:month }}
+```
+
+Note: in previous versions of Calendar, this was `set_month`. It does the same thing.
+
+
 ## Month Tag
 Provides the ability to output a calendar month.
 
