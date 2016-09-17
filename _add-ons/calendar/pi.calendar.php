@@ -189,8 +189,8 @@ class Plugin_calendar extends Plugin
 	 */
 	public function month_name()
 	{
-		$month   = $this->blink->get('month');
-		$year    = $this->blink->get('year');
+		$month   = $this->blink->get('month', date('m'));
+		$year    = $this->blink->get('year', date('Y'));
 		return Date::format('F', $year.'-'.$month.'-01');
 	}
 
@@ -202,8 +202,8 @@ class Plugin_calendar extends Plugin
 	 */
 	public function next_month()
 	{
-		$month   = $this->blink->get('month');
-		$year    = $this->blink->get('year');
+		$month   = $this->blink->get('month', date('m'));
+		$year    = $this->blink->get('year', date('Y'));
 		$next_month = strtotime("$year-$month +1 month");
 		$vars = array(
 			'month'      => Date::format('m', $next_month),
@@ -219,8 +219,8 @@ class Plugin_calendar extends Plugin
 	 */
 	public function prev_month()
 	{
-		$month   = $this->blink->get('month');
-		$year    = $this->blink->get('year');
+		$month   = $this->blink->get('month', date('m'));
+		$year    = $this->blink->get('year', date('Y'));
 		$prev_month = strtotime("$year-$month -1 month");
 		$vars = array(
 			'month'      => Date::format('m', $prev_month),
